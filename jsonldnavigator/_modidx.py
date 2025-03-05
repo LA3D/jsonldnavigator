@@ -32,4 +32,8 @@ d = { 'settings': { 'branch': 'main',
                                       'jsonldnavigator.core.get_class_details': ('core.html#get_class_details', 'jsonldnavigator/core.py'),
                                       'jsonldnavigator.core.get_class_properties': ( 'core.html#get_class_properties',
                                                                                      'jsonldnavigator/core.py'),
+                                      'jsonldnavigator.core.get_property_details': ( 'core.html#get_property_details',
+                                                                                     'jsonldnavigator/core.py'),
+                                      'jsonldnavigator.core.get_property_path': ('core.html#get_property_path', 'jsonldnavigator/core.py'),
+                                      'jsonldnavigator.core.safe_text': ('core.html#safe_text', 'jsonldnavigator/core.py'),
                                       'jsonldnavigator.core.search_terms': ('core.html#search_terms', 'jsonldnavigator/core.py')}}}
