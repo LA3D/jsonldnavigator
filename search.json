@@ -1,0 +1,92 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "{{repo}}",
+    "section": "",
+    "text": "This file will become your README and also the index of your documentation.",
+    "crumbs": [
+      "{{repo}}"
+    ]
+  },
+  {
+    "objectID": "index.html#developer-guide",
+    "href": "index.html#developer-guide",
+    "title": "{{repo}}",
+    "section": "Developer Guide",
+    "text": "Developer Guide\nIf you are new to using nbdev here are some useful pointers to get you started.\n\nInstall {{lib_path}} in Development mode\n# make sure {{lib_path}} package is installed in development mode\n$ pip install -e .\n\n# make changes under nbs/ directory\n# ...\n\n# compile to have changes apply to {{lib_path}}\n$ nbdev_prepare",
+    "crumbs": [
+      "{{repo}}"
+    ]
+  },
+  {
+    "objectID": "index.html#usage",
+    "href": "index.html#usage",
+    "title": "{{repo}}",
+    "section": "Usage",
+    "text": "Usage\n\nInstallation\nInstall latest from the GitHub repository:\n$ pip install git+https://github.com/{{user}}/{{lib_name}}.git\nor from conda\n$ conda install -c {{user}} {{lib_path}}\nor from pypi\n$ pip install {{lib_path}}\n\n\nDocumentation\nDocumentation can be found hosted on this GitHub repository’s pages. Additionally you can find package manager specific guidelines on conda and pypi respectively.",
+    "crumbs": [
+      "{{repo}}"
+    ]
+  },
+  {
+    "objectID": "index.html#how-to-use",
+    "href": "index.html#how-to-use",
+    "title": "{{repo}}",
+    "section": "How to use",
+    "text": "How to use\nFill me in please! Don’t forget code examples:\n\n1+1\n\n2",
+    "crumbs": [
+      "{{repo}}"
+    ]
+  },
+  {
+    "objectID": "core.html",
+    "href": "core.html",
+    "title": "core",
+    "section": "",
+    "text": "We’re developing a set of tools to help LLMs effectively navigate and understand JSON-LD documents, with a particular focus on Croissant metadata for ML datasets. The motivation is to:\n\nCreate semantic navigation capabilities for JSON-LD similar to what toolslm.md_hier provides for Markdown\nEnable LLMs to access and understand complex semantic web data without requiring deep JSON-LD expertise\nSupport agentic workflows where LLMs can autonomously explore and extract meaning from JSON-LD documents\nMake Croissant dataset metadata more accessible to LLM-based tools\n\n\n\n\nWe’re following a fast.ai-inspired methodology characterized by:\n\nSimple, focused functions that do one thing well\nMinimal abstractions with clean, pythonic interfaces\nComposable tools that can be combined in flexible ways\nLeveraging LLM capabilities rather than building complex parsing logic\n\nOur approach uses prompt chaining to progressively build understanding of JSON-LD documents:\n\nDocument Overview Analysis: Identify types, properties, and the document’s purpose\nContext Resolution: Map namespace prefixes to URIs and understand vocabularies\nType-Based Exploration: Analyze each type and its relationships\nPath Generation: Create navigation paths for accessing important properties\nDocument Summary: Synthesize a comprehensive understanding of the document\n\n\n\n\nWe’ve built several key components:\n\nJSON-LD Analysis Class: A container for analysis results with helper methods\nNamespace Resolution: Tools for fetching and understanding vocabulary definitions\nTerm Explanation: Using LLMs to extract meaning from vocabulary definitions\nXML-Tagged Response Parsing: Extracting structured information from LLM responses\n\nWe’ve integrated these with toolslm-inspired patterns for: - Content fetching and parsing - Caching results for efficiency - Providing clean, notebook-friendly representations\n\n\n\nThe tools are designed to support agentic workflows by:\n\nProviding ground truth from JSON-LD documents\nEnabling semantic exploration of document structure\nSupporting term definition lookup and explanation\nGenerating navigation paths for accessing data\n\nThe LLM acts as the semantic analyzer, while our code provides the scaffolding to make JSON-LD documents accessible and navigable.\nThe end goal is a clean, efficient toolkit that enables LLMs to work with JSON-LD data as easily as they work with natural language text.\n\nsource\n\n\n\n JsonLdNavigator (jsonld_data)\n\nNavigator for JSON-LD documents with semantic understanding\n\nsource\n\n\n\n\n JsonLdNavigator (jsonld_data)\n\nNavigator for JSON-LD documents with semantic understanding\n\nsource\n\n\n\n\n create_schema_index (jsonld_data)\n\nCreate a semantic index from JSON-LD data\n\nsource\n\n\n\n\n get_class_details (jsonld_data, class_id)\n\nGet detailed information about a specific class\n\nsource\n\n\n\n\n get_property_details (jsonld_data, property_id)\n\nGet detailed information about a specific property\n\nsource\n\n\n\n\n get_class_properties (jsonld_data, class_id, include_inherited=True)\n\nGet properties applicable to a class\n\nsource\n\n\n\n\n find_related_classes (jsonld_data, class_id)\n\nFind classes related to the specified class through properties\n\nsource\n\n\n\n\n search_terms (jsonld_data, query)\n\nSearch for classes or properties matching a query string\n\nsource\n\n\n\n\n get_property_path (jsonld_data, source_class, target_class, max_depth=2)\n\nFind property paths between two classes\n\nsource\n\n\n\n\n L (x)\n\n\nsource\n\n\n\n\n safe_text (value)\n\nSafely extract text from a JSON-LD value which might be a string or a dict\n\n# Example usage\nnav = JsonLdNavigator(dataset_info['jsonld'])\nnav.show_index()\n\nSchema.org Index:\n- Classes: 3\n- Properties: 136\n\nAvailable Affordances:\n- get_class(class_id): Get detailed information about a class\n- get_property(property_id): Get detailed information about a property\n- get_properties_for(class_id, include_inherited=True): Get properties for a class\n- find_related(class_id): Find classes semantically related to this class\n- search(query): Search for classes or properties matching a query\n- find_path(source_class, target_class): Find property paths between classes\n\n\n\n# Get Dataset class details\ndataset = nav.get_class('schema:Dataset')\nprint(f\"\\nDataset: {dataset['label']}\")\nprint(f\"Description: {dataset['description'][:100]}...\")\n\n\nDataset: Dataset\nDescription: A body of structured information describing some topic(s) of interest....\n\n\n\n# Find related classes\nrelated = nav.find_related('schema:Dataset')\nprint(f\"\\nClasses related to Dataset:\")\nprint(f\"- Parent classes: {related['parent_classes']}\")\nprint(f\"- Referenced classes: {related['references'][:3]}...\")\n\n\nClasses related to Dataset:\n- Parent classes: ['schema:CreativeWork']\n- Referenced classes: ['schema:CreativeWork', 'schema:URL', 'schema:Product']...\n\n\n\n# Search for a term\nresults = nav.search('catalog')\nprint(f\"\\nSearch results for 'catalog':\")\nprint(f\"- Found {len(results['properties'])} properties and {len(results['classes'])} classes\")\n\n\nSearch results for 'catalog':\n- Found 4 properties and 0 classes",
+    "crumbs": [
+      "core"
+    ]
+  },
+  {
+    "objectID": "core.html#motivation-and-goals",
+    "href": "core.html#motivation-and-goals",
+    "title": "core",
+    "section": "",
+    "text": "We’re developing a set of tools to help LLMs effectively navigate and understand JSON-LD documents, with a particular focus on Croissant metadata for ML datasets. The motivation is to:\n\nCreate semantic navigation capabilities for JSON-LD similar to what toolslm.md_hier provides for Markdown\nEnable LLMs to access and understand complex semantic web data without requiring deep JSON-LD expertise\nSupport agentic workflows where LLMs can autonomously explore and extract meaning from JSON-LD documents\nMake Croissant dataset metadata more accessible to LLM-based tools",
+    "crumbs": [
+      "core"
+    ]
+  },
+  {
+    "objectID": "core.html#approach",
+    "href": "core.html#approach",
+    "title": "core",
+    "section": "",
+    "text": "We’re following a fast.ai-inspired methodology characterized by:\n\nSimple, focused functions that do one thing well\nMinimal abstractions with clean, pythonic interfaces\nComposable tools that can be combined in flexible ways\nLeveraging LLM capabilities rather than building complex parsing logic\n\nOur approach uses prompt chaining to progressively build understanding of JSON-LD documents:\n\nDocument Overview Analysis: Identify types, properties, and the document’s purpose\nContext Resolution: Map namespace prefixes to URIs and understand vocabularies\nType-Based Exploration: Analyze each type and its relationships\nPath Generation: Create navigation paths for accessing important properties\nDocument Summary: Synthesize a comprehensive understanding of the document",
+    "crumbs": [
+      "core"
+    ]
+  },
+  {
+    "objectID": "core.html#implementation",
+    "href": "core.html#implementation",
+    "title": "core",
+    "section": "",
+    "text": "We’ve built several key components:\n\nJSON-LD Analysis Class: A container for analysis results with helper methods\nNamespace Resolution: Tools for fetching and understanding vocabulary definitions\nTerm Explanation: Using LLMs to extract meaning from vocabulary definitions\nXML-Tagged Response Parsing: Extracting structured information from LLM responses\n\nWe’ve integrated these with toolslm-inspired patterns for: - Content fetching and parsing - Caching results for efficiency - Providing clean, notebook-friendly representations",
+    "crumbs": [
+      "core"
+    ]
+  },
+  {
+    "objectID": "core.html#agentic-workflow-integration",
+    "href": "core.html#agentic-workflow-integration",
+    "title": "core",
+    "section": "",
+    "text": "The tools are designed to support agentic workflows by:\n\nProviding ground truth from JSON-LD documents\nEnabling semantic exploration of document structure\nSupporting term definition lookup and explanation\nGenerating navigation paths for accessing data\n\nThe LLM acts as the semantic analyzer, while our code provides the scaffolding to make JSON-LD documents accessible and navigable.\nThe end goal is a clean, efficient toolkit that enables LLMs to work with JSON-LD data as easily as they work with natural language text.\n\nsource\n\n\n\n JsonLdNavigator (jsonld_data)\n\nNavigator for JSON-LD documents with semantic understanding\n\nsource\n\n\n\n\n JsonLdNavigator (jsonld_data)\n\nNavigator for JSON-LD documents with semantic understanding\n\nsource\n\n\n\n\n create_schema_index (jsonld_data)\n\nCreate a semantic index from JSON-LD data\n\nsource\n\n\n\n\n get_class_details (jsonld_data, class_id)\n\nGet detailed information about a specific class\n\nsource\n\n\n\n\n get_property_details (jsonld_data, property_id)\n\nGet detailed information about a specific property\n\nsource\n\n\n\n\n get_class_properties (jsonld_data, class_id, include_inherited=True)\n\nGet properties applicable to a class\n\nsource\n\n\n\n\n find_related_classes (jsonld_data, class_id)\n\nFind classes related to the specified class through properties\n\nsource\n\n\n\n\n search_terms (jsonld_data, query)\n\nSearch for classes or properties matching a query string\n\nsource\n\n\n\n\n get_property_path (jsonld_data, source_class, target_class, max_depth=2)\n\nFind property paths between two classes\n\nsource\n\n\n\n\n L (x)\n\n\nsource\n\n\n\n\n safe_text (value)\n\nSafely extract text from a JSON-LD value which might be a string or a dict\n\n# Example usage\nnav = JsonLdNavigator(dataset_info['jsonld'])\nnav.show_index()\n\nSchema.org Index:\n- Classes: 3\n- Properties: 136\n\nAvailable Affordances:\n- get_class(class_id): Get detailed information about a class\n- get_property(property_id): Get detailed information about a property\n- get_properties_for(class_id, include_inherited=True): Get properties for a class\n- find_related(class_id): Find classes semantically related to this class\n- search(query): Search for classes or properties matching a query\n- find_path(source_class, target_class): Find property paths between classes\n\n\n\n# Get Dataset class details\ndataset = nav.get_class('schema:Dataset')\nprint(f\"\\nDataset: {dataset['label']}\")\nprint(f\"Description: {dataset['description'][:100]}...\")\n\n\nDataset: Dataset\nDescription: A body of structured information describing some topic(s) of interest....\n\n\n\n# Find related classes\nrelated = nav.find_related('schema:Dataset')\nprint(f\"\\nClasses related to Dataset:\")\nprint(f\"- Parent classes: {related['parent_classes']}\")\nprint(f\"- Referenced classes: {related['references'][:3]}...\")\n\n\nClasses related to Dataset:\n- Parent classes: ['schema:CreativeWork']\n- Referenced classes: ['schema:CreativeWork', 'schema:URL', 'schema:Product']...\n\n\n\n# Search for a term\nresults = nav.search('catalog')\nprint(f\"\\nSearch results for 'catalog':\")\nprint(f\"- Found {len(results['properties'])} properties and {len(results['classes'])} classes\")\n\n\nSearch results for 'catalog':\n- Found 4 properties and 0 classes",
+    "crumbs": [
+      "core"
+    ]
+  }
+]
